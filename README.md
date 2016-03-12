@@ -10,8 +10,7 @@ TwitterBot does the following:
 3. Follow all users for passed-in @screen_names (TODO).
 4. Unfollow all users for passed-in @screen_names (TODO).
 
-Note that the bot respects the Twitter API rate limits.  The Twitter API rate limits are explained here: 
-https://dev.twitter.com/rest/public/rate-limiting
+Note that the bot respects the Twitter API rate limits.  [The Twitter API rate limits] (https://dev.twitter.com/rest/public/rate-limiting).
 
 ## Configuration
 
@@ -29,24 +28,30 @@ You can either run the TwitterBot from within your editor or build a jar for it 
 
 The currently supported parameters are as follows:
 
-Usage: <exe> <screen name>
+Usage: \<exe\> \<screen name\>
         --initial
-        --query=<screen name1, screen name2, etc>
-        (NOT YET SUPPORTED) --follow=<screen name1, screen name2, etc>
-        (NOT YET SUPPORTED) --unfollow=<screen name1, screen name2, etc>
+        --query=\<screen name1, screen name2, etc\>
+        (NOT YET SUPPORTED) --follow=\<screen name1, screen name2, etc\>
+        (NOT YET SUPPORTED) --unfollow=\<screen name1, screen name2, etc\>
+
+\<exe\> 
+ * Name of the TwitterBot executable.
+ 
+\<screen name\>
+ * Twitter screen name of the authentication user.
 
 --initial
   * This is a special mode that will query and save to file the followers and friends of the authentication user.
   
---query=<screen name1, screen name2, etc>
+--query=\<screen name1, screen name2, etc\>
   * This will query and save to file the followers of each of the passed-in screen names.  One thread will be used for each screen name.  
   
---follow=<screen name1, screen name2, etc>
+--follow=\<screen name1, screen name2, etc\>
   * This will follow all users of the passed-in screen names.  One thread will be used for each screen name.
   * Note that this is not yet supported.
 
---unfollow=<screen name1, screen name2, etc>
-  * This will unfollow  =users of the passed-in screen names.  One thread will be used for each screen name.
+--unfollow=\<screen name1, screen name2, etc\>
+  * This will unfollow all users of the passed-in screen names.  One thread will be used for each screen name.
   * Note that this is not yet supported.
   
 ## License
