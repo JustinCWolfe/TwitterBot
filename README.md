@@ -38,18 +38,18 @@ Usage: \<exe\>
 \-\-initial
   * This is a special mode that will query and save to file the followers and friends of the authentication user.
  
-\-\-query=\<screen name1, screen name2, etc\>
+\-\-query=screen name1, screen name2, etc
   * This will query and save to file the followers of each of the passed-in screen names.  One thread will be used for each screen name.  
  
-\-\-follow=\<screen name1, screen name2, etc\>
+\-\-follow=screen name1, screen name2, etc
   * This will follow all users of the passed-in screen names.  One thread will be used for each screen name.
   * Note that this is not yet supported.
 
-\-\-unfollow=\<screen name1, screen name2, etc\>
+\-\-unfollow=screen name1, screen name2, etc
   * This will unfollow all users of the passed-in screen names.  One thread will be used for each screen name.
   * Note that this is not yet supported.
  
 ## License
 
-[MIT License](../blob/master/LICENSE)
+[MIT License](../master/LICENSE)
 
