@@ -98,7 +98,7 @@ public class AuthenticationHelper
 
     private static final AtomicReference<String> OATH_SIGNATURE = new AtomicReference<>();
 
-    private static String getBase64EBearerToken(String authenticatedScreenName) throws Exception
+    private static String getBase64EBearerToken() throws Exception
     {
         AuthUser authUser = AuthUser.getInstance();
         String encodedConsumerKey = URLEncoder.encode(authUser.consumerKey,
@@ -113,9 +113,9 @@ public class AuthenticationHelper
         return new String(bearerTokenCredentialsEncodedBytes);
     }
 
-    public static String getApplicationOnlyAuthorizationHeader(String authenticatedScreenName) throws Exception
+    public static String getApplicationOnlyAuthorizationHeader() throws Exception
     {
-        String base64BearerTokenCredentials = getBase64EBearerToken(authenticatedScreenName);
+        String base64BearerTokenCredentials = getBase64EBearerToken();
         return String.format(APP_ONLY_AUTHORIZATION_HEADER_FORMAT, base64BearerTokenCredentials);
     }
 
@@ -129,14 +129,14 @@ public class AuthenticationHelper
         return RandomStringUtils.randomAlphanumeric(32);
     }
 
-    public static String getOathAuthorizationHeader(String authenticatedScreenName) throws Exception
+    public static String getOathAuthorizationHeader() throws Exception
     {
         AuthUser authUser = AuthUser.getInstance();
         OATH_SIGNATURE.compareAndSet(null,
                 HmacSignatureHelper.calculateRFC2104HMAC(authUser.consumerKey, authUser.consumerSecret));
         String nonce = getNonce();
         String timestamp = Long.toString(System.currentTimeMillis());
-        String base64BearerTokenCredentials = getBase64EBearerToken(authenticatedScreenName);
+        String base64BearerTokenCredentials = getBase64EBearerToken();
         return String.format(OATH_AUTHORIZATION_HEADER_FORMAT, authUser.consumerKey, nonce, OATH_SIGNATURE.get(),
                 timestamp, base64BearerTokenCredentials);
     }

@@ -152,11 +152,11 @@ public class ApiHelper
             boolean endOfUsers = false;
             do {
                 try {
-                    System.out.println(screenName + " - getting token");
+                    Logging.logToConsole(screenName + " - getting token");
                     int currentRequestNumber = APP_AUTH_RATE_LIMIT_QUEUE.take();
-                    System.out
-                            .println(String.format("%s - current request number %d", screenName, currentRequestNumber));
-                    System.out.println(screenName + " - running query");
+                    Logging.logToConsole(
+                            String.format("%s - current request number %d", screenName, currentRequestNumber));
+                    Logging.logToConsole(screenName + " - running query");
                     UserQueryResponse result = (userQueryType == UserQueryType.FOLLOWERS)
                             ? getFollowers(authResponse, screenName, cursor)
                             : getFriends(authResponse, screenName, cursor);
@@ -241,10 +241,10 @@ public class ApiHelper
         try {
             try {
                 String actionAndScreenName = String.format("%s %s", friendActionType.toString(), screenName);
-                System.out.println(actionAndScreenName + " - getting token");
+                Logging.logToConsole(actionAndScreenName + " - getting token");
                 int currentRequestNumber = USER_AUTH_RATE_LIMIT_QUEUE.take();
-                System.out.println(actionAndScreenName + " - current request number: " + currentRequestNumber);
-                System.out.println(actionAndScreenName + " - changing friend status");
+                Logging.logToConsole(actionAndScreenName + " - current request number: " + currentRequestNumber);
+                Logging.logToConsole(actionAndScreenName + " - changing friend status");
                 UserQueryResponse result = (friendActionType == FriendActionType.FOLLOW)
                         ? follow(authResponse, screenName)
                         : unfollow(authResponse, screenName);

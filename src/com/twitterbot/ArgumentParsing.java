@@ -12,7 +12,7 @@ public class ArgumentParsing
     {
         if (arguments.length == 0) {
             StringBuilder usage = new StringBuilder();
-            usage.append("Usage: <exe> <screen name>\n");
+            usage.append("Usage: <exe>\n");
             usage.append("\t--initial\n");
             usage.append("\t--query=<screen name1, screen name2, etc>\n");
             usage.append("\t(NOT YET SUPPORTED) --follow=<screen name1, screen name2, etc>\n");
@@ -20,7 +20,6 @@ public class ArgumentParsing
             System.out.println(usage.toString());
             return null;
         }
-        String authenticatedScreenName = arguments[0];
         boolean runQueryForInitialData = false;
         Pattern queryPattern = Pattern.compile("--query=(.*)");
         Pattern followPattern = Pattern.compile("--follow=(.*)");
@@ -28,7 +27,7 @@ public class ArgumentParsing
         List<String> screenNamesToQueryForFollowers = new ArrayList<>();
         List<String> screenNamesToFollow = new ArrayList<>();
         List<String> screenNamesToUnfollow = new ArrayList<>();
-        for (int argIndex = 1; argIndex < arguments.length; argIndex++) {
+        for (int argIndex = 0; argIndex < arguments.length; argIndex++) {
             String argument = arguments[argIndex];
             if (!StringHelper.isNullOrEmpty(argument)) {
                 Matcher queryMatcher = queryPattern.matcher(argument);
@@ -55,14 +54,12 @@ public class ArgumentParsing
                 }
             }
         }
-        return new ParsedArguments(authenticatedScreenName, runQueryForInitialData, screenNamesToQueryForFollowers,
-                screenNamesToFollow, screenNamesToUnfollow);
+        return new ParsedArguments(runQueryForInitialData, screenNamesToQueryForFollowers, screenNamesToFollow,
+                screenNamesToUnfollow);
     }
 
     static class ParsedArguments
     {
-        final String authenticatedScreenName;
-
         final boolean runQueryForInitialData;
 
         final List<String> screenNamesToQueryForFollowers;
@@ -71,11 +68,9 @@ public class ArgumentParsing
 
         final List<String> screenNamesToUnfollowFollowers;
 
-        ParsedArguments(String authenticatedScreenName, boolean runQueryForInitialData,
-                List<String> screenNamesToQueryForFollowers, List<String> screenNamesToFollowFollowers,
-                List<String> screenNamesToUnfollowFollowers)
+        ParsedArguments(boolean runQueryForInitialData, List<String> screenNamesToQueryForFollowers,
+                List<String> screenNamesToFollowFollowers, List<String> screenNamesToUnfollowFollowers)
         {
-            this.authenticatedScreenName = authenticatedScreenName;
             this.runQueryForInitialData = runQueryForInitialData;
             this.screenNamesToQueryForFollowers = screenNamesToQueryForFollowers;
             this.screenNamesToFollowFollowers = screenNamesToFollowFollowers;

@@ -12,6 +12,7 @@ import com.twitterbot.ApiHelper.User;
 import com.twitterbot.ApiHelper.UserQueryType;
 import com.twitterbot.ArgumentParsing.ParsedArguments;
 import com.twitterbot.AuthenticationHelper.ApplicationOnlyAuthResponse;
+import com.twitterbot.AuthenticationHelper.AuthUser;
 import com.twitterbot.AuthenticationHelper.TokenType;
 
 public class Bot
@@ -31,34 +32,28 @@ public class Bot
             return;
         }
         Logging.logToConsole("Starting " + APP_DESCRIPTION);
-        String authHeader = AuthenticationHelper
-                .getApplicationOnlyAuthorizationHeader(parsedArguments.authenticatedScreenName);
+        AuthUser authUser = AuthUser.getInstance();
+        Logging.logToConsole("Authentication user screen name: " + authUser.screenName);
+        String authHeader = AuthenticationHelper.getApplicationOnlyAuthorizationHeader();
         Logging.logToConsole("Auth header: " + authHeader);
         ApplicationOnlyAuthResponse authResponse = AuthenticationHelper.callAuthorizationService(authHeader);
         Logging.logToConsole(
                 String.format("Token type: %s\nAccess token: %s", authResponse.tokenTypeStr, authResponse.accessToken));
         if (authResponse.getTokenType() == TokenType.BEARER) {
             if (parsedArguments.runQueryForInitialData) {
-                Logging.logToConsole(
-                        "Loading initial followers and friends for: " + parsedArguments.authenticatedScreenName);
-                Logging.logToConsole("Get followers for: " + parsedArguments.authenticatedScreenName);
-                queryUsers(authResponse, parsedArguments.authenticatedScreenName, UserQueryType.FOLLOWERS);
-                Logging.logToConsole("Get friends for: " + parsedArguments.authenticatedScreenName);
-                queryUsers(authResponse, parsedArguments.authenticatedScreenName, UserQueryType.FRIENDS);
+                queryUsers(authResponse, authUser.screenName, UserQueryType.FOLLOWERS);
+                queryUsers(authResponse, authUser.screenName, UserQueryType.FRIENDS);
             } else {
                 for (String screenName : parsedArguments.screenNamesToQueryForFollowers) {
-                    Logging.logToConsole("Get followers for: " + screenName);
                     queryUsers(authResponse, screenName, UserQueryType.FOLLOWERS);
                 }
                 for (String screenName : parsedArguments.screenNamesToFollowFollowers) {
-                    Logging.logToConsole("Follow followers of: " + screenName);
                     List<String> followers = getUsersFromFile(screenName, UserQueryType.FOLLOWERS);
                     for (String follower : followers) {
                         changeFriendStatus(authResponse, follower, FriendActionType.FOLLOW);
                     }
                 }
                 for (String screenName : parsedArguments.screenNamesToUnfollowFollowers) {
-                    Logging.logToConsole("Unfollow followers of: " + screenName);
                     List<String> followers = getUsersFromFile(screenName, UserQueryType.FOLLOWERS);
                     for (String follower : followers) {
                         changeFriendStatus(authResponse, follower, FriendActionType.UNFOLLOW);
